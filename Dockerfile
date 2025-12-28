@@ -2,8 +2,8 @@
 FROM node:18-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
-# Install dependencies
-RUN npm ci
+# Install dependencies (using install instead of ci because package-lock.json might be missing)
+RUN npm install
 COPY . .
 # Build the Vite app (outputs to /dist)
 RUN npm run build
