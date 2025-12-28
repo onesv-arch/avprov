@@ -72,6 +72,7 @@ app.post('/api/create', async (req, res) => {
 
     browser = await puppeteer.launch({
       headless: "new",
+      ignoreHTTPSErrors: true,
       // On Render with our Dockerfile, we use the installed Chrome Stable
       executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
       args: launchArgs
@@ -288,14 +289,4 @@ app.post('/api/create', async (req, res) => {
   } finally {
     if (browser) await browser.close();
   }
-});
-
-// --- CATCH ALL ROUTE FOR REACT SPA ---
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// Bind to 0.0.0.0 is crucial for Docker containers
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Fullstack Server running on port ${PORT}`);
 });
